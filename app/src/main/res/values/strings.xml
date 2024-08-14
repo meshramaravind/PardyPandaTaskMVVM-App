@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PardyPandaTaskApp</string>
+    <string name="str_txt_enter_otp">Enter OTP</string>
+</resources>
