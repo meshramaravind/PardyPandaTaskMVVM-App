@@ -40,7 +40,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         generateOtpButton.setOnClickListener {
             val phoneNumber = binding.phoneNumberEditText.text.toString()
             if (phoneNumber.isNotEmpty()) {
-                viewModel.sendVerificationCode(phoneNumber)
+                viewModel.sendVerificationCode(requireActivity(), phoneNumber)
             } else {
                 Toast.makeText(
                     requireContext(),
@@ -53,7 +53,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         }
 
         verifyOtpButton.setOnClickListener {
-
             val code = binding.verificationCodeEditText.text.toString()
             if (code.isNotEmpty()) {
                 viewModel.verifyCode(code)

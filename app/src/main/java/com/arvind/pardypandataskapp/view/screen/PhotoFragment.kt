@@ -1,9 +1,13 @@
 package com.arvind.pardypandataskapp.view.screen
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,10 +36,40 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding, PhotoViewModel>() {
         rvPhotos.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.photos.observe(viewLifecycleOwner, Observer { photos ->
-            adapter = PhotoAdapter(photos)
-            rvPhotos.adapter = adapter
+            if (photos.isNullOrEmpty()) {
+                progessBar.visibility = View.VISIBLE
+                rvPhotos.visibility = View.GONE
+            } else {
+                progessBar.visibility = View.GONE
+                rvPhotos.visibility = View.VISIBLE
+                adapter = PhotoAdapter(photos)
+                rvPhotos.adapter = adapter
+                rvPhotos.setHasFixedSize(true)
+            }
         })
+        progessBar.visibility = View.VISIBLE
+        fetchPhotos()
+    }
 
+    private fun fetchPhotos() {
+        if (isNetworkAvailable()) {
+            binding.progessBar.visibility = View.VISIBLE
+            viewModel.fetchPhotos()
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "No internet connection. Loading offline data...",
+                Toast.LENGTH_LONG
+            ).show()
+            viewModel.fetchPhotos()
+        }
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager =
+            activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        return activeNetwork?.isConnected == true
     }
 
     override fun getViewBinding(

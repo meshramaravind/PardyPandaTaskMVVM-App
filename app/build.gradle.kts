@@ -98,12 +98,15 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+    implementation (libs.androidx.room.paging)
 
     // activity & fragment ktx
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat.v140alpha03)
 
+    // Paging
+    implementation (libs.androidx.paging.runtime)
 
     // glide for image
     implementation(libs.glide)

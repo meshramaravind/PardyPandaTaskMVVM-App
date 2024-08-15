@@ -10,7 +10,7 @@ import com.arvind.pardypandataskapp.domain.models.PhotoDataResponse
 @Dao
 interface PhotoDao {
     @Query("SELECT * FROM Photos")
-    fun getPhotos(): LiveData<List<PhotoDataResponse>>
+    suspend fun getPhotos(): List<PhotoDataResponse>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(photos: List<PhotoDataResponse>)

@@ -2,6 +2,7 @@ package com.arvind.pardypandataskapp.viewmodel
 
 import android.app.Application
 import android.util.Log
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,12 +29,12 @@ class LoginViewModel @Inject constructor(
 
     private var verificationId: String? = null
 
-    fun sendVerificationCode(phoneNumber: String) {
+    fun sendVerificationCode(requireActivity: FragmentActivity, phoneNumber: String) {
         _isLoading.value = true
         val options = PhoneAuthOptions.newBuilder(firebaseAuth)
-            .setPhoneNumber(phoneNumber)
+            .setPhoneNumber("+91$phoneNumber")
             .setTimeout(60L, TimeUnit.SECONDS)
-            .setActivity(getApplication())
+            .setActivity(requireActivity)
             .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                     _isLoading.value = false

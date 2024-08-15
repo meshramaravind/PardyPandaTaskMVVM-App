@@ -13,9 +13,13 @@ class PhotoRepository @Inject constructor(
     private val apiService: APIService,
     private val photoDao: PhotoDao
 ) {
-    fun getPhotos(): LiveData<List<PhotoDataResponse>> = liveData {
-        val photos = apiService.getPhotos()
-        photoDao.insertAll(photos)
-        emitSource(photoDao.getPhotos())
+    suspend fun getPhotos(): List<PhotoDataResponse> {
+        return try {
+            val response = apiService.getPhotos()
+            photoDao.insertAll(response)
+            response
+        } catch (e: Exception) {
+            photoDao.getPhotos()
+        }
     }
 }
